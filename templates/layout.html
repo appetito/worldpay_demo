@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Worldpay Flask Example</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+     <link rel='stylesheet' href='https://payments.worldpay.com/resources/hpp/integrations/embedded/css/hpp-embedded-integration-library.css'/>
+    <script src='https://payments.worldpay.com/resources/hpp/integrations/embedded/js/hpp-embedded-integration-library.js'></script>
+ 
+</head>
+<body>
+  <header class="main">
+    <div class="container wide">
+      <div class="content slim">
+        <div class="set">
+          <div class="fill">
+            <a class="pseudoshop" href="/">Worldpay Demo<strong>SHOP</strong></a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="notice-wrapper">
+      {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+          <div class="show notice error notice-error">
+            <span class="notice-message">{{ message }}</span>
+          </div>
+        {% endfor %}
+      {% endwith %}
+    </div>
+  </header>
+
+  {% block content %}{% endblock %}
+  <!-- <script src="https://apitest.smart2pay.com/Scripts/Merchant/globalpay.embedded.1.0.js"></script> -->
+</body>
+</html>

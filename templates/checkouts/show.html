@@ -1,0 +1,87 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class="wrapper">
+  <div class="response container">
+    <div class="content">
+      <div class="icon">
+        <img src="/static/images/{{ result['icon'] }}.svg" alt="">
+      </div>
+      {% if result['icon'] == "success" %}
+      <div>
+        <h1>Thank You For Your Purchase!</h1>
+        <h2>Wanna buy one more Thing with your last pament method?</h2>
+
+        <form id="payment-form" method="post" action="/checkouts/one_more">
+            <input name="price" type="hidden" value="2.33">
+        <button class="button" type="submit"><span>Buy one more Thing!</span></button>
+      </form>
+
+ <div>
+      <h3>Refund  This Transaction</h3>   
+      <form id="payment-form" method="post" action="/refund">
+          <input name="tx_id" type="hidden" value="{{ payment['MerchantTransactionID'] }}">
+          <input name="payment_id" type="hidden" value="{{ payment['ID'] }}">
+
+        <button class="button" type="submit"><span>Refund</span></button>
+      </form>
+ </div>
+
+ <div>
+      <h3>Partial Refund This Transaction</h3>   
+      <form id="payment-form" method="post" action="/refund/partial">
+          <input name="tx_id" type="hidden" value="{{ payment['MerchantTransactionID'] }}">
+          <input name="payment_id" type="hidden" value="{{ payment['ID'] }}">
+        <input type="text" name="amount" placeholder="Amount to Refund">
+        <button class="button" type="submit"><span>Partial Refund</span></button>
+      </form>
+ </div>
+
+      </div>
+      {% endif %}
+
+      <h1>{{ result['header'] }}</h1>
+      <section>
+        <p>{{ result['message'] }}</p>
+      </section>
+
+      <section>
+        <a class="button primary back" href="/checkouts/new">
+          <span>New Buy</span>
+        </a>
+      </section>
+    </div>
+  </div>
+</div>
+
+<aside class="drawer dark">
+  <header>
+    <div class="content compact">
+      <h3>API Response</h3>
+    </div>
+  </header>
+
+  <article class="content compact">
+  <section>
+    <h5>Payment</h5>
+      <table cellpadding="0" cellspacing="0">
+        <tbody>
+          {% for k, v in payment.items() %}
+
+            <tr>
+              <td><b>{{ k }}</b></td>
+              <td>{{ v }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        </table>  
+  </section>
+
+    <section>
+      <a class="button secondary full" href="https://docs.smart2pay.com/" target="_blank">
+        <span>See the Docs</span>
+      </a>
+    </section>
+  </article>
+</aside>
+{% endblock %}

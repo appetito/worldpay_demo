@@ -1,0 +1,149 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class="wrapper">
+  <div class="checkout container">
+
+    <header>
+      <h1>Buy The Thing</h1>
+      <p>
+        Really nice Thing, you should buy it
+      </p>
+      <h2>Only $99.99<small style="color: grey">(&euro;67.67)</small></h2>
+    </header>
+
+    <form id="payment-form" method="post" action="/checkouts">
+          <label for="currency">
+            <span class="">Currency</span>
+            <div class="input-wrapper currency-wrapper">
+              <select id="currency" name="currency">
+                <option value="USD" selected="selected">$ USD $</option>
+                <option value="EUR">&euro; EURO &euro;</option>
+              </select>
+            </div>
+          </label>
+          <label for="amount">
+            <span class="">Amount (units)</span>
+            <div class="input-wrapper amount-wrapper">
+              <input id="amount" name="amount" type="number" min="1" placeholder="Amount" value="1">
+            </div>
+          </label>
+
+          <h2>Read <a href="https://docs.smart2pay.com/category/testing-requirements/">here</a> about test Amounts </h2>
+          <label for="">
+            <span class="">price_USD</span>
+            <div class="input-wrapper amount-wrapper">
+              <input name="price_USD" type="text" value="99.99">
+            </div>
+          </label>
+          <label for="">
+            <span class="">price_EUR</span>
+            <div class="input-wrapper amount-wrapper">
+              <input name="price_EUR" type="text" value="67.67">
+            </div>
+          </label>
+      <section>
+        <div class="bt-drop-in-wrapper">
+          <div id="bt-dropin"></div>
+        </div>
+          <!-- <input name="price_USD" type="hidden" value="299.99"> -->
+          <!-- <input name="price_EUR" type="hidden" value="267.67"> -->
+        </section>
+
+      <section>
+        <h3>Enter your card info</h3>
+          <label for="card_holder">
+            <span class="">Card Holder Name</span>
+            <div class="input-wrapper card_holder-wrapper">
+              <input id="card_holder" name="card_holder" type="text" min="1" placeholder="card_holder" value="MR X">
+            </div>
+          </label>
+
+          <label for="card_number">
+            <span class="">card_number</span>
+            <div class="input-wrapper card_number-wrapper">
+              <input id="card_number" name="card_number" type="text" min="1" placeholder="card_number" value="4111111111111111">
+            </div>
+          </label>
+        
+          <label for="card_exp_month">
+            <span class="">Exp Month</span>
+            <div class="input-wrapper">
+              <select id="card_exp_month" name="card_exp_month">
+                <option value="1" selected="selected">Jan</option>
+                <option value="2">Feb</option>
+              </select>
+            </div>
+          </label>
+          <label for="card_exp_year">
+            <span class="">Exp Year</span>
+            <div class="input-wrapper">
+              <select id="card_exp_year" name="card_exp_year">
+                <option value="2017">2017 (invalid)</option>
+                <option value="2022">2022</option>
+              </select>
+            </div>
+          </label>
+          
+          <label for="card_cvv">
+            <span class="">Card CVV</span>
+            <div class="input-wrapper card_cvv-wrapper">
+              <input id="card_cvv" name="card_cvv" type="text" min="1" placeholder="card_cvv" value="777">
+            </div>
+          </label>
+        
+      </section>
+      <p></p>
+      <button class="button" type="submit"><span>Checkout</span></button>
+    </form>
+
+    <div id="globalPayContainer" style="height:600px;"></div>
+
+  </div>
+</div>
+<hr>
+<div id='custom-html'></div>
+ 
+    <script type="text/javascript">
+ 
+    //your options
+    var customOptions = {
+      iframeIntegrationId: 'libraryObject',
+      iframeHelperURL: '{{ request.host }}/static/helper.html',
+      iframeBaseURL: '{{ request.host }}',
+      url: 'https://payments.worldpay.com/ngpp/integration/wpg/corporate?OrderKey=111&Ticket=222',
+      type: 'iframe',
+      target: 'custom-html',
+      accessibility: true,
+      debug: false,
+      language: 'en',
+      country: 'gb',
+      preferredPaymentMethod: 'VISA-SSL',
+      successURL: '/success',
+      cancelURL: '/cancel',
+      failureURL: '/failure',
+      pendingURL: '/pending',
+      errorURL: '/error'
+    };
+    //initialise the library and pass options
+    var libraryObject = new WPCL.Library();
+    libraryObject.setup(customOptions);
+    </script>
+
+<script>
+$(document).ready(function(){
+  // $("#payment-form").submit(function(){
+  //   var data = $(this).serialize();
+  //   console.log("FORM DATA", data);
+  //   $.post($(this).attr("action"), data, function(resp) {
+  //     // body...
+  //       console.log("RESPONSE", resp, resp.RedirectURL);
+  //       renderGlobalPay(resp.RedirectURL, "globalPayContainer");
+  //       // var iframe = $('<iframe src="' + resp.RedirectURL + '" style="height:600px; width: 100%"/>');
+  //       // $("#globalPayContainer").append(iframe);
+  //   });
+  //   return false;
+  // });
+});
+</script>
+{% endblock %}
